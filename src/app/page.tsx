@@ -23,8 +23,7 @@ export default async function Home() {
             {isAuth && <Button>Go to Chats</Button>}
           </div>
           <p className="max-w-xl mt-2 text-lg text-slate-600">
-            Join millions of student, researchers and professionals to instantly
-            answer questions and unerstand research with AI
+            Chat with any pdf
           </p>
 
           <div className="w-full mt-4">
