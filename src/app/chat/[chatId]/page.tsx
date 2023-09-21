@@ -1,6 +1,7 @@
 import ChatComponent from "@/components/ChatComponent";
 import ChatSideBar from "@/components/ChatSideBar";
 import PDFViewer from "@/components/PDFViewer";
+import { checkSubscription } from "@/lib/checkSubscription";
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { auth } from "@clerk/nextjs";
@@ -16,6 +17,7 @@ type Props = {
 
 const ChatPage = async ({ params: { chatId } }: Props) => {
   const { userId } = await auth();
+  const isPro = await checkSubscription();
   if (!userId) {
     return redirect("/sign-in");
   }
@@ -36,7 +38,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
       <div className="flex w-full max-h-screen bg-gray-100 overflow-hidden">
         {/* chat sidebar */}
         <div className="flex-[1] max-w-xs">
-          <ChatSideBar chats={_chats} chatId={parseInt(chatId)} />
+          <ChatSideBar chats={_chats} chatId={parseInt(chatId)} isPro={isPro} />
         </div>
         {/* pdf viewer */}
         <div className="max-h-screen p-4 overflow-scroll flex-[5]">
