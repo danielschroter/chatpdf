@@ -50,7 +50,23 @@ export async function POST(req: Request) {
       ],
       stream: true,
     });
-    const stream = OpenAIStream(response);
+    const stream = OpenAIStream(response, {
+      onStart: async () => {
+        // save user message into db
+        await db.insert(_messages).values({
+          chatId,
+          content: lastMessage.content,
+          role: "user",
+        });
+      },
+      onCompletion: async (completion) => {
+        await db.insert(_messages).values({
+          chatId,
+          content: completion,
+          role: "system",
+        });
+      },
+    });
     return new StreamingTextResponse(stream);
   } catch (error) {}
 }

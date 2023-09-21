@@ -1,12 +1,17 @@
 import { cn } from "@/lib/utils";
 import { Message } from "ai/react";
 import React from "react";
+import { Skeleton } from "./ui/skeleton";
 
 type Props = {
   messages: Message[];
+  isLoading: boolean;
 };
 
-const MessageList = ({ messages }: Props) => {
+const MessageList = ({ messages, isLoading }: Props) => {
+  if (isLoading) {
+    return <Skeleton className="absolute top-2 left-2 w-[100px] h-[20px]" />;
+  }
   if (!messages) {
     return <></>;
   }
