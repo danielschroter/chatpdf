@@ -43,7 +43,6 @@ export async function loadS3IntoPinecone(fileKey: string) {
   console.log("loading pdf into memory" + file_name);
   const loader = new PDFLoader(file_name);
   const pages = (await loader.load()) as PDFPage[];
-  return pages;
 
   // 2. split and segment the pdf
   const documents = await Promise.all(pages.map(prepareDocument));
@@ -51,15 +50,15 @@ export async function loadS3IntoPinecone(fileKey: string) {
   // 3. vectorise and embed individual documents
   const vectors = await Promise.all(documents.flat().map(embedDocument));
 
-  //   // 4. upload to pinecone
-  //   const client = await getPineconeClient();
-  //   const pineconeIndex = await client.index("chatpdf");
-  //   const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
+  // 4. upload to pinecone
+  const client = await getPineconeClient();
+  const pineconeIndex = await client.index("email-automation-test");
+  const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
 
-  //   console.log("inserting vectors into pinecone");
-  //   await namespace.upsert(vectors);
+  console.log("inserting vectors into pinecone");
+  await namespace.upsert(vectors);
 
-  //   return documents[0];
+  return documents[0];
 }
 
 async function embedDocument(doc: Document) {
