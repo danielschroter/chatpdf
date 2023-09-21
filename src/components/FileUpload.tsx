@@ -56,7 +56,6 @@ const FileUpload = () => {
             },
           }
         );
-        console.log("data", data);
       } catch (error) {
         console.log(error);
       } finally {
