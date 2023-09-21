@@ -27,8 +27,6 @@ export default async function Home() {
             answer questions and unerstand research with AI
           </p>
 
-          {isAuth && <span>{userId}</span>}
-
           <div className="w-full mt-4">
             {isAuth ? (
               <FileUpload></FileUpload>
